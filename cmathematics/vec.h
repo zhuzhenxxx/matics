@@ -14,7 +14,7 @@ typedef struct {
 extern const vec VEC_UNDEFINED;
 
 //分配几维的单位向量
-vec allocate(unsigned int dim);
+vec allocateVec(unsigned int dim);
 
 //构造向量，分配+赋值
 vec constructDefaultVector(unsigned int dim, float val);
@@ -26,75 +26,75 @@ vec constructEmptyVector(unsigned int dim);
 vec newVector(unsigned int dim, ...);
 
 //拷贝一个向量  值传递
-vec copy(vec v);
+vec copyVec(vec v);
 
 //拷贝一个向量， 地址传递  内存拷贝
-vec copyPtr(vec* v);
+vec copyPtrVec(vec* v);
 
 //输出向量
-void print(vec v);
+void printVec(vec v);
 
 //判断两个向量是否相等
-bool equals(vec v1, vec v2);
+bool equalsVec(vec v1, vec v2);
 
 //数乘运算 向量v 每个元素乘以k（新分配）
-vec scalarMultiplication(vec v, float k);
+vec scalarMultiplicationVec(vec v, float k);
 
 //数乘运算 向量v 每个元素乘以k（已存在）
-void scalarMultiplicationBy(vec* v, float k);
+void scalarMultiplicationByVec(vec* v, float k);
 
 //除运算 向量v 每个元素除以k（新分配）
-vec scalarDivision(vec v, float k);
+vec scalarDivisionVec(vec v, float k);
 
 //除运算 向量v 每个元素除以k（已存在）
-void scalarDivisionBy(vec* v, float k);
+void scalarDivisionByVec(vec* v, float k);
 
 //指数运算
-vec power(vec v, float k);
+vec powerVec(vec v, float k);
 
 //指数运算 已存在
-void powerOf(vec* v, float k);
+void powerOfVec(vec* v, float k);
 
 //向量加
-vec add(vec v1, vec v2);
+vec addVec(vec v1, vec v2);
 
 //将v2加至v1
-bool addTo(vec* v1, vec v2);
+bool addToVec(vec* v1, vec v2);
 
 //向量减
-vec subtract(vec v1, vec v2);
+vec subtractVec(vec v1, vec v2);
 
 //v1 - v2 结果赋值于v1
-bool subtractFrom(vec* v1, vec v2);
+bool subtractFromVec(vec* v1, vec v2);
 
 //乘法  v1第一行 * v2第一行
-vec multiply(vec v1, vec v2);
+vec multiplyVec(vec v1, vec v2);
 
 //乘法  v1第一行 * v2第一行 以此类推， 值赋值v1
-bool mutiplyBy(vec* v1, vec v2);
+bool mutiplyByVec(vec* v1, vec v2);
 
 //同上面乘法
-vec devide(vec v1, vec v2);
+vec devidVece(vec v1, vec v2);
 
-bool divideBy(vec* v1, vec v2);
+bool divideByVec(vec* v1, vec v2);
 
 // 两个向量点乘之积
-float dot(vec v1, vec v2);
+float dotVec(vec v1, vec v2);
 
 // 判断维度是否相同 相同返回积
-bool orthogonal(vec v1, vec v2);
+bool orthogonalVec(vec v1, vec v2);
 
 //三维向量，叉积叉积的定义： c =a x b  其中a,b,c均为向量。即两个向量的叉积得到的还是向量！
-vec cross(vec v1, vec v2);
+vec crossVec(vec v1, vec v2);
 
 //向量内积
-float magnitude(vec v);
+float magnitudeVec(vec v);
 
-float magnitudeSquared(vec v);
+float magnitudeSquaredVec(vec v);
 
 //单位化
-vec normalized(vec v);
+vec normalizedVec(vec v);
 
-void normalize(vec* v);
+void normalizeVec(vec* v);
 
 #endif //CMATHETMATICS_VEC_H

@@ -6,7 +6,7 @@
 
 const vec VEC_UNDEFINED = {0, NULL};
 
-vec allocate(unsigned int dim)
+vec allocateVec(unsigned int dim)
 {
     vec ret;
 
@@ -18,7 +18,7 @@ vec allocate(unsigned int dim)
 
 vec constructDefaultVector(unsigned int dim, float val)
 {
-    vec ret = allocate(dim);
+    vec ret = allocateVec(dim);
 
     for (unsigned int i = 0; i < dim; i++)
     {
@@ -34,7 +34,7 @@ vec constructEmptyVector(unsigned int dim)
 
 vec newVector(unsigned int dim, ...)
 {
-    vec ret = allocate(dim);
+    vec ret = allocateVec(dim);
 
     va_list list;
     va_start(list, dim);
@@ -48,19 +48,19 @@ vec newVector(unsigned int dim, ...)
     return ret;
 }
 
-vec copy(vec v)
+vec copVecy(vec v)
 {
     return v;
 }
 
-vec copyPtr(vec* v)
+vec copyPtrVec(vec* v)
 {
     vec ret;
     memcpy(&ret, v, sizeof(vec));
     return ret;
 }
 
-void print(vec v)
+void printVec(vec v)
 {
     printf("[ ");
 
@@ -81,7 +81,7 @@ void print(vec v)
     printf("]\n");
 }
 
-bool equals(vec v1, vec v2)
+bool equalsVec(vec v1, vec v2)
 {
     if (v1.dim == v2.dim)
     {
@@ -97,9 +97,9 @@ bool equals(vec v1, vec v2)
     return false;
 }
 
-vec scalarMultiplication(vec v, float k)
+vec scalarMultiplicationVec(vec v, float k)
 {
-    vec ret = allocate(v.dim);
+    vec ret = allocateVec(v.dim);
 
     for (unsigned int i = 0; i < ret.dim; i++)
     {
@@ -118,9 +118,9 @@ void scalarMultiplicationBy(vec* v, float k)
 }
 
 
-vec scalarDivision(vec v, float k)
+vec scalarDivisionVec(vec v, float k)
 {
-    vec ret = allocate(v.dim);
+    vec ret = allocateVec(v.dim);
 
     for (unsigned int i = 0; i < ret.dim; i++)
     {
@@ -130,7 +130,7 @@ vec scalarDivision(vec v, float k)
     return ret;
 }
 
-void scalarDivisionBy(vec* v, float k)
+void scalarDivisionByVec(vec* v, float k)
 {
     for (unsigned int i = 0; i < v->dim; i++)
     {
@@ -138,9 +138,9 @@ void scalarDivisionBy(vec* v, float k)
     }
 }
 
-vec power(vec v, float k)
+vec powerVec(vec v, float k)
 {
-    vec ret = allocate(v.dim);
+    vec ret = allocateVec(v.dim);
 
     for (unsigned int i = 0; i < ret.dim; i++)
     {
@@ -150,7 +150,7 @@ vec power(vec v, float k)
     return ret;
 }
 
-void powerOf(vec* v, float k)
+void powerOfVec(vec* v, float k)
 {
     for (unsigned int i = 0; i < v->dim; i++)
     {
@@ -158,14 +158,14 @@ void powerOf(vec* v, float k)
     }
 }
 
-vec add(vec v1, vec v2)
+vec addVec(vec v1, vec v2)
 {
     if (v1.dim != v2.dim)
     {
         return VEC_UNDEFINED;
     }
 
-    vec ret = allocate(v1.dim);
+    vec ret = allocateVec(v1.dim);
 
     for (unsigned int i = 0; i < ret.dim; i++)
     {
@@ -175,7 +175,7 @@ vec add(vec v1, vec v2)
     return ret;
 }
 
-bool addTo(vec* v1, vec v2)
+bool addToVec(vec* v1, vec v2)
 {
     if (v1->dim != v2.dim)
     {
@@ -190,14 +190,14 @@ bool addTo(vec* v1, vec v2)
     return true;
 }
 
-vec subtract(vec v1, vec v2)
+vec subtractVec(vec v1, vec v2)
 {
     if (v1.dim != v2.dim)
     {
         return VEC_UNDEFINED;
     }
 
-    vec ret = allocate(v1.dim);
+    vec ret = allocateVec(v1.dim);
 
     for (unsigned int i = 0; i < ret.dim; i++)
     {
@@ -207,7 +207,7 @@ vec subtract(vec v1, vec v2)
     return ret;
 }
 
-bool subtractFrom(vec* v1, vec v2)
+bool subtractFromVec(vec* v1, vec v2)
 {
     if (v1->dim != v2.dim)
     {
@@ -222,14 +222,14 @@ bool subtractFrom(vec* v1, vec v2)
     return true;
 }
 
-vec multiply(vec v1, vec v2)
+vec multiplyVec(vec v1, vec v2)
 {
     if (v1.dim != v2.dim)
     {
         return VEC_UNDEFINED;
     }
 
-    vec ret = allocate(v1.dim);
+    vec ret = allocateVec(v1.dim);
 
     for (unsigned int i = 0; i < ret.dim; i++)
     {
@@ -239,7 +239,7 @@ vec multiply(vec v1, vec v2)
     return ret;
 }
 
-bool mutiplyBy(vec* v1, vec v2)
+bool mutiplyByVec(vec* v1, vec v2)
 {
     if (v1->dim != v2.dim)
     {
@@ -254,14 +254,14 @@ bool mutiplyBy(vec* v1, vec v2)
     return true;
 }
 
-vec devide(vec v1, vec v2)
+vec devideVec(vec v1, vec v2)
 {
     if (v1.dim != v2.dim)
     {
         return VEC_UNDEFINED;
     }
 
-    vec ret = allocate(v1.dim);
+    vec ret = allocateVec(v1.dim);
 
     for (unsigned int i = 0; i < ret.dim; i++)
     {
@@ -271,7 +271,7 @@ vec devide(vec v1, vec v2)
     return ret;
 }
 
-bool divideBy(vec* v1, vec v2)
+bool divideByVec(vec* v1, vec v2)
 {
     if (v1->dim != v2.dim)
     {
@@ -286,7 +286,7 @@ bool divideBy(vec* v1, vec v2)
     return true;
 }
 
-float dot(vec v1, vec v2)
+float dotVec(vec v1, vec v2)
 {
     float ret = 0.0f;
 
@@ -300,19 +300,19 @@ float dot(vec v1, vec v2)
     return ret;
 }
 
-bool orthogonal(vec v1, vec v2)
+bool orthogonalVec(vec v1, vec v2)
 {
-    return v1.dim == v2.dim ? dot(v1, v2) == 0.0f : false;
+    return v1.dim == v2.dim ? dotVec(v1, v2) == 0.0f : false;
 }
 
-vec cross(vec v1, vec v2)
+vec crossVec(vec v1, vec v2)
 {
     if (v1.dim != 3 || v2.dim != 3)
     {
         return VEC_UNDEFINED;
     }
 
-    vec ret = allocate(3);
+    vec ret = allocateVec(3);
 
     ret.elements[0] = (v1.elements[1] * v2.elements[2]) - (v1.elements[2] * v2.elements[1]);
     ret.elements[1] = -1 * ((v1.elements[0] * v2.elements[2]) - (v1.elements[2] * v2.elements[0]));
@@ -321,12 +321,12 @@ vec cross(vec v1, vec v2)
     return ret;
 }
 
-float magnitude(vec v)
+float magnitudeVec(vec v)
 {
-    return sqrt(magnitudeSquared(v));
+    return sqrt(magnitudeSquaredVec(v));
 }
 
-float magnitudeSquared(vec v)
+float magnitudeSquaredVec(vec v)
 {
     float ret = 0.0f;
 
@@ -338,10 +338,10 @@ float magnitudeSquared(vec v)
     return ret;
 }
 
-vec normalized(vec v)
+vec normalizedVec(vec v)
 {
-    vec ret = allocate(v.dim);
-    float mag = magnitude(v);
+    vec ret = allocateVec(v.dim);
+    float mag = magnitudeVec(v);
 
     for (unsigned int i = 0; i < ret.dim; i++)
     {
@@ -350,9 +350,9 @@ vec normalized(vec v)
     return ret;
 }
 
-void normalize(vec* v)
+void normalizeVec(vec* v)
 {
-    float mag = magnitude(*v);
+    float mag = magnitudeVec(*v);
 
     for (unsigned int i = 0; i < v->dim; i++)
     {
