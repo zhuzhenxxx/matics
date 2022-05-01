@@ -28,6 +28,6 @@ int main()
     printMat(m2);
     matMatMutiplication(m1, m2);
 
-    
+
     return 0;
 }
