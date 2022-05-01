@@ -269,3 +269,18 @@ mat matMatMutiplication(mat m1, mat m2)
     }
     return ret;
 }
+
+mat transpose(mat* m)
+{
+    mat ret = allocateMat(m->cols, m->rows);
+
+    for (unsigned int r = 0; r < ret.rows; r++)
+    {
+        for (unsigned int c = 0; c < ret.cols;  c++)
+        {
+            ret.elements[r][c] = m->elements[c][r];
+        }
+    }
+
+    return ret;
+}

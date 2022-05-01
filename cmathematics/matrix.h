@@ -46,4 +46,6 @@ bool matAddTo(mat* m1, mat* m2);
 vec matVecMutiplication(mat m, vec v);
 
 mat matMatMutiplication(mat m1, mat m2);
+
+mat transpose(mat* m);
 #endif //CMATHEMATICS_MATRIX_H
