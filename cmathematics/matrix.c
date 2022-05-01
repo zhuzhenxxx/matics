@@ -47,19 +47,25 @@ mat zeroMatrixMat(unsigned int rows, unsigned int cols)
     return ret;
 }
 
-mat newMatrixMat(unsigned int rows, unsigned int cols, ...)
+mat newMatrixMat(unsigned int rows, unsigned int cols, unsigned int numVals, ...)
 {
     mat ret = allocateMat(rows, cols);
 
     va_list list;
-    unsigned int size = rows * cols;
-    va_start(list, size);
+    va_start(list, numVals);
 
     for (unsigned int r = 0; r < rows; r++)
     {
         for (unsigned int c = 0; c < cols; c++)
         {
-            ret.elements[r][c] = va_arg(list, double);
+            if (i++ < numVals)
+            {
+                ret.elements[r][c] = va_arg(list, double);
+            }
+            else
+            {
+                ret.elements[r][c] = 0.0f;
+            }
         }
     }
 

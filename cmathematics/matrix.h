@@ -19,7 +19,9 @@ mat identityMat(unsigned int dim);
 
 mat zeroMatrixMat(unsigned int rows, unsigned int cols);
 
-mat newMatrixMat(unsigned int rows, unsigned int cols, ...);
+mat newMatrixMat(unsigned int rows, unsigned int cols, unsigned int numVals, ...);
+
+#define matrix(rows, cols, ...) newMatrixMat(rows, cols, NUMARGS(float, __VA_ARGS__), ##__VA_ARGS__)
 
 mat copyMat(mat m);
 
