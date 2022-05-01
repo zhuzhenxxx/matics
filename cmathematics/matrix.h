@@ -19,7 +19,9 @@ mat identityMat(unsigned int dim);
 
 mat zeroMatrixMat(unsigned int rows, unsigned int cols);
 
-mat newMatrixMat(unsigned int rows, unsigned int cols, ...);
+mat newMatrixMat(unsigned int rows, unsigned int cols, unsigned int numVals, ...);
+
+#define matrix(rows, cols, ...) newMatrixMat(rows, cols, NUMARGS(float, __VA_ARGS__), ##__VA_ARGS__)
 
 mat copyMat(mat m);
 
@@ -34,4 +36,16 @@ vec getMatCol(mat* m, unsigned int col);
 mat toRowVec(vec* v);
 
 mat toColVec(vec* v);
+
+mat matScalarAddition(mat m, float k);
+
+void matScalarAdditionTo(mat* m, float k);
+
+mat matAdd(mat m1, mat m2);
+
+bool matAddTo(mat* m1, mat* m2);
+
+vec matVecMutiplication(mat m, vec v);
+
+mat matMatMutiplication(mat m1, mat m2);
 #endif //CMATHEMATICS_MATRIX_H

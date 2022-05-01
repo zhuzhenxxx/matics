@@ -47,19 +47,25 @@ mat zeroMatrixMat(unsigned int rows, unsigned int cols)
     return ret;
 }
 
-mat newMatrixMat(unsigned int rows, unsigned int cols, ...)
+mat newMatrixMat(unsigned int rows, unsigned int cols, unsigned int numVals, ...)
 {
     mat ret = allocateMat(rows, cols);
 
     va_list list;
-    unsigned int size = rows * cols;
-    va_start(list, size);
+    va_start(list, numVals);
 
     for (unsigned int r = 0; r < rows; r++)
     {
         for (unsigned int c = 0; c < cols; c++)
         {
-            ret.elements[r][c] = va_arg(list, double);
+            if (i++ < numVals)
+            {
+                ret.elements[r][c] = va_arg(list, double);
+            }
+            else
+            {
+                ret.elements[r][c] = 0.0f;
+            }
         }
     }
 
@@ -122,7 +128,7 @@ vec getMatCol(mat* m, unsigned int col)
         return VEC_UNDEFINED;
     }
 
-    vec ret = allocateVec(m->cols);
+    vec ret = allocateVec(m->rows);
     for (unsigned int i = 0; i < ret.dim; i++)
     {
         ret.elements[i] = m->elements[i][col];
@@ -152,5 +158,120 @@ mat toColVec(vec* v)
         ret.elements[i][0]  = v->elements[i];
     }
 
+    return ret;
+}
+
+mat matScalarAddition(mat m, float k)
+{
+    mat ret = allocateMat(m.rows, m.cols);
+
+    for (unsigned int r = 0; r < ret.rows; r++)
+    {
+        for (unsigned int c = 0; c < ret.cols; c++)
+        {
+            ret.elements[r][c] = m.elements[r][c]  + k;
+        }
+    }
+    return ret;
+}
+
+void matScalarAdditionTo(mat* m, float k)
+{
+    for (unsigned int r = 0; r < m->rows; r++)
+    {
+        for (unsigned int c = 0; c < m->cols; c++)
+        {
+            m->elements[r][c] += k;
+        }
+    }
+}
+
+mat matAdd(mat  m1, mat m2)
+{
+    if (m1.rows != m2.rows || m1.cols != m2.cols)
+    {
+        return MAT_UNDEFINED;
+    }
+
+    mat ret = allocateMat(m1.rows,  m1.rows);
+
+    for (unsigned int r = 0; r < ret.rows; r++)
+    {
+        for (unsigned int c = 0; c < ret.cols; c++)
+        {
+            ret.elements[r][c] = m1.elements[r][c] + m2.elements[r][c];
+        }
+    }
+    return ret;
+}
+
+bool matAddTo(mat* m1, mat* m2)
+{
+    if (m1->rows != m2->rows || m1->cols != m2->cols)
+    {
+        return false;
+    }
+
+    for (unsigned int r = 0; r < m1->rows; r++)
+    {
+        for (unsigned int c = 0; c < m1->cols; c++)
+        {
+            m1->elements[r][c] += m2->elements[r][c];
+        }
+    }
+
+    return true;
+}
+
+vec matVecMutiplication(mat m, vec v)
+{
+    if (m.cols != v.dim)
+    {
+        return VEC_UNDEFINED;
+    }
+
+    vec ret = allocateVec(m.rows);
+
+    for (unsigned int r = 0; r < ret.dim; r++)
+    {
+        ret.elements[r] = dotVec(v, getMatCol(&m, r + 1));
+    }
+
+    return ret;
+}
+
+mat matMatMutiplication(mat m1, mat m2)
+{
+    if (m1.cols != m2.rows)
+    {
+        return MAT_UNDEFINED;
+    }
+
+    vec* m1Rows = malloc(m1.rows * sizeof(vec));
+    vec* m2Cols = malloc(m2.cols * sizeof(vec));
+
+    for (unsigned int r = 0; r < m1.rows; r++)
+    {
+        m1Rows[r] = getMatRow(&m1, r + 1);
+        printf("%d row of m1:\n", r);
+        printVec(m1Rows[r]);
+    }
+
+    for (unsigned int c = 0; c < m2.cols; c++)
+    {
+        m2Cols[c] = getMatCol(&m2, c + 1);
+        printf("%d col of m2:\n", c);
+        printVec(m2Cols[c]);
+    }
+
+    mat ret = allocateMat(m1.rows, m2.cols);
+
+    for (unsigned int r = 0; r < ret.rows; r++)
+    {
+        for (unsigned int c = 0; c < ret.cols; c++)
+        {
+            ret.elements[r][c] = dotVec(m1Rows[r], m2Cols[c]);
+        }
+    }
     return ret;
 }
