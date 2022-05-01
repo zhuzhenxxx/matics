@@ -122,7 +122,7 @@ vec getMatCol(mat* m, unsigned int col)
         return VEC_UNDEFINED;
     }
 
-    vec ret = allocateVec(m->cols);
+    vec ret = allocateVec(m->rows);
     for (unsigned int i = 0; i < ret.dim; i++)
     {
         ret.elements[i] = m->elements[i][col];
@@ -258,5 +258,14 @@ mat matMatMutiplication(mat m1, mat m2)
         printVec(m2Cols[c]);
     }
 
-    return MAT_UNDEFINED;
+    mat ret = allocateMat(m1.rows, m2.cols);
+
+    for (unsigned int r = 0; r < ret.rows; r++)
+    {
+        for (unsigned int c = 0; c < ret.cols; c++)
+        {
+            ret.elements[r][c] = dotVec(m1Rows[r], m2Cols[c]);
+        }
+    }
+    return ret;
 }

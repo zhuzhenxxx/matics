@@ -25,8 +25,7 @@ int main()
                           6.0f, 3.0f, -1.0f, 0.0f,
                           1.0f, 1.0f, 0.0f, 4.0f,
                           -2.0f, 5.0f, 0.0f, 2.0f);
-    printMat(m2);
-    matMatMutiplication(m1, m2);
+    printMat(matMatMutiplication(m1, m2));
 
 
     return 0;
