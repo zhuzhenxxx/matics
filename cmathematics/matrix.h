@@ -34,4 +34,16 @@ vec getMatCol(mat* m, unsigned int col);
 mat toRowVec(vec* v);
 
 mat toColVec(vec* v);
+
+mat matScalarAddition(mat m, float k);
+
+void matScalarAdditionTo(mat* m, float k);
+
+mat matAdd(mat m1, mat m2);
+
+bool matAddTo(mat* m1, mat* m2);
+
+vec matVecMutiplication(mat m, vec v);
+
+mat matMatMutiplication(mat m1, mat m2);
 #endif //CMATHEMATICS_MATRIX_H
