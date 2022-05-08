@@ -123,7 +123,7 @@ vec getMatRow(mat* m, unsigned int row)
 vec getMatCol(mat* m, unsigned int col)
 {
     col--;
-    if (col < 0  || col >= m->cols)
+    if (col >= m->cols)
     {
         return VEC_UNDEFINED;
     }
@@ -273,5 +273,289 @@ mat matMatMutiplication(mat m1, mat m2)
             ret.elements[r][c] = dotVec(m1Rows[r], m2Cols[c]);
         }
     }
+    return ret;
+}
+
+mat transpose(mat* m)
+{
+    mat ret = allocateMat(m->cols, m->rows);
+
+    for (unsigned int r = 0; r < ret.rows; r++)
+    {
+        for (unsigned int c = 0; c < ret.cols;  c++)
+        {
+            ret.elements[r][c] = m->elements[c][r];
+        }
+    }
+
+    return ret;
+}
+
+
+bool swapRows(mat* m, unsigned int r1, unsigned int r2)
+{
+    r1--;
+    r2--;
+
+    if (r1 >= m->rows || r2 >= m->rows || r1 == r2)
+    {
+        return false;
+    }
+
+    float* tmp = m->elements[r1];
+    m->elements[r1] = m->elements[r2];
+    m->elements[r2] = tmp;
+
+    return true;
+}
+
+bool addRows(mat* m, unsigned int r1, unsigned int r2)
+{
+    r1--;
+    r2--;
+
+    if (r1 >= m->rows || r2 >= m->rows || r1 == r2)
+    {
+        return false;
+    }
+
+    for (unsigned int c = 0; c < m->cols; c++)
+    {
+        m->elements[r1][c] += m->elements[r2][c];
+    }
+
+    return true;
+}
+
+bool multiplyRow(mat* m, unsigned int r, float k)
+{
+    r--;
+
+    if (r >= m->rows)
+    {
+        return false;
+    }
+
+    for (unsigned int c = 0; c < m->cols; c++)
+    {
+        m->elements[r][c] *= k;
+    }
+
+    return true;
+}
+
+bool addMultiple(mat* m, unsigned int r1, unsigned int r2, float k)
+{
+    r1--;
+    r2--;
+
+    if (r1 >= m->rows || r2 >= m->rows || r1 == r2 || k == 0.0f)
+    {
+        return false;
+    }
+
+    for (unsigned int c = 0; c < m->cols; c++)
+    {
+        m->elements[r1][c] += k * m->elements[r2][c];
+    }
+    return true;
+}
+
+void ref(mat* m)
+{
+    unsigned int currentRow = 0;
+    for (unsigned int c = 0; c < m->cols; c++)
+    {
+        unsigned int r = currentRow;
+        if (r >= m->rows)
+        {
+            break;
+        }
+
+        for (; r > m->rows; r++)
+        {
+            if (m->elements[r][c] != 0.0f)
+            {
+                break;
+            }
+        }
+
+        // didn't find a nonzero entry in colum
+        if (r == m->rows)
+        {
+            continue;
+        }
+
+        swapRows(m, currentRow, r);
+
+        // mutiply row by 1 / byte
+        float factor = 1 / m->elements[currentRow][c];
+        for (unsigned int col = c; col < m->cols; col++)
+        {
+            m->elements[currentRow][col] *= factor;
+        }
+
+        // clear out rows below
+        for (r = currentRow + 1; r < m->rows; r++)
+        {
+            addMultiple(m, r, currentRow, -1 * m->elements[r][c]);
+        }
+
+        currentRow++;
+    }
+}
+
+void rref(mat* m)
+{
+    unsigned int currentRow = 0;
+    for (unsigned int c = 0; c < m->cols; c++)
+    {
+        unsigned int r = currentRow;
+        if (r >= m->rows)
+        {
+            break;
+        }
+
+        for (; r > m->rows; r++)
+        {
+            if (m->elements[r][c] != 0.0f)
+            {
+                break;
+            }
+        }
+
+        // didn't find a nonzero entry in colum
+        if (r == m->rows)
+        {
+            continue;
+        }
+
+        swapRows(m, currentRow, r);
+
+        // mutiply row by 1 / byte
+        float factor = 1 / m->elements[currentRow][c];
+        for (unsigned int col = c; col < m->cols; col++)
+        {
+            m->elements[currentRow][col] *= factor;
+        }
+
+        // clear out rows above and below
+        for (r = 0; r < m->cols; r++)
+        {
+            if (r == currentRow)
+            {
+                continue;
+            }
+            addMultiple(m, r, currentRow, -1 * m->elements[r][c]);
+        }
+
+        currentRow++;
+    }
+}
+
+mat augmentVector(mat* m, vec* v)
+{
+    if (m->rows != v->dim)
+    {
+        return MAT_UNDEFINED;
+    }
+
+    mat ret = allocateMat(m->rows, m->cols + 1);
+
+    // copy matrix values
+    for (unsigned int r = 0; r < m->rows; r++)
+    {
+        unsigned int c = 0;
+        for (; c < m->cols; c++)
+        {
+            ret.elements[r][c] = m->elements[r][c];
+        }
+
+        ret.elements[r][c]  = v->elements[r];
+    }
+
+    return ret;
+}
+
+mat augmentMatrix(mat* m, mat* m2)
+{
+    if (m->rows != m2->rows)
+    {
+        return MAT_UNDEFINED;
+    }
+
+    mat ret = allocateMat(m->rows, m->cols + m2->cols);
+
+    // copy matrix values
+    for (unsigned int r = 0; r < m->rows; r++)
+    {
+        unsigned int c = 0;
+        for (; c < m->cols; c++)
+        {
+            ret.elements[r][c] = m->elements[r][c];
+        }
+
+       for (; c < ret.cols; c++)
+       {
+           ret.elements[r][c] = m2->elements[r][c - m->cols];
+       }
+    }
+
+    return ret;
+}
+
+mat spliceMat(mat* m, unsigned int exclRow, unsigned int exclCol)
+{
+    exclRow--;
+    exclCol--;
+
+    mat ret = allocateMat(m->rows - 1, m->cols - 1);
+
+    unsigned int rowOffset = 0;
+    for (unsigned int r = 0; r < ret.rows; r++)
+    {
+        unsigned int colOffset = 0;
+
+        if (r == exclRow)
+        {
+            rowOffset++;
+        }
+
+        for (unsigned int c = 0; c < ret.cols; c++)
+        {
+            if (c == exclCol)
+            {
+                colOffset++;
+            }
+
+            ret.elements[r][c] = m->elements[r + rowOffset][c + colOffset];
+        }
+    }
+    return ret;
+}
+
+float determinant(mat m)
+{
+    if (m.rows != m.cols)
+    {
+        return 0.0f;
+    }
+
+    //base cases
+    if (m.rows == 1)
+    {
+        return m.elements[0][0];
+    }
+
+    char cofactorSign = 1;
+    float ret = 0.0f;
+
+    // expand across first row
+    for (unsigned int c = 0; c < m.cols; c++)
+    {
+        ret += cofactorSign * m.elements[0][c] * determinant(spliceMat(&m, 1, c + 1));
+        cofactorSign = -cofactorSign;
+    }
+
     return ret;
 }
