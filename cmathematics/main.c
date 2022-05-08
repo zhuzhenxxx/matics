@@ -5,12 +5,13 @@
 
 int main()
 {
-    mat m2 = newMatrixMat(3, 4,
-                          6.0f, 3.0f, -1.0f, 0.0f,
-                          1.0f, 1.0f, 0.0f, 4.0f,
-                          -2.0f, 5.0f, 0.0f, 2.0f);
-    printMat(m2);
-    printMat(transpose(&m2));
+    mat m = newMatrixMat(3, 3,
+                         7.0f, 2.0f, 0.0f,
+                         3.0f, -15.0f, 0.0f,
+                         6.0f, -4.0f, 2.0f);
+    printMat(m);
+
+    printf("%f\n", determinant(m));
 
     return 0;
 }
