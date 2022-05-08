@@ -6,5 +6,11 @@ typedef unsigned char bool;
 
 #define NUMARGS(type, ...) (sizeof((type[]){0.0f, ##__VA_ARGS__}) /  sizeof(float)  - 1)
 
+#define SWAP(a, b) \
 
+void swap(int *a, int *b);
+
+void swapFloat(float* a, float* b);
+
+void swapFloatPointers(float* a, float* b);
 #endif //CMATHETMATICS_CMATHEMATICS_H
